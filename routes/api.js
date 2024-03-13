@@ -15,4 +15,3 @@ router.get("/api/tipoproduto", async (request, response) => {
 })
 
 module.exports = router;
-//
