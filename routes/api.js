@@ -14,10 +14,16 @@ router.get("/api/tipoproduto", async (request, response) => {
     response.send(tipoProdutos)
 })
 
-//rota create 
+//rota create produto
 router.get("/produto/create", async (request, response) => {
+    const produtos = await DataBase.executeSQLQuery("SELECT * FROM Produto");
+    response.render("Produto/create", {tipoProdutos: produtos});
+});
+
+//rota create tipoproduto
+router.get("/tipoproduto/create", async (request, response) => {
     const tipoProdutos = await DataBase.executeSQLQuery("SELECT * FROM TipoProduto");
-    response.render("Produto/create", {tipoProdutos: tipoProdutos});
+    response.render("TipoProduto/create", {tipoProdutos: tipoProdutos});
 });
 
 module.exports = router;

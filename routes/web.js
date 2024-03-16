@@ -27,5 +27,51 @@ router.get("/recurso", async (request, response) => {
     response.render("Recurso/index");
 });
 
+router.post("/produto", async (request, response) => {
+    const numero = request.body.numero;
+    const nome = request.body.nome;
+    const preco = request.body.preco;
+    const TipoProduto_id = request.body.TipoProduto_id;
+    const ingredientes = request.body.ingredientes;
+    const timestamp = (new Date()).toISOString().slice(0, 19).replace('T', ' ');
+    const dataAtualizacao = timestamp;
+    const dataCriacao = timestamp;
+    const result = await DataBase.executeSQLQuery(`INSERT INTO Produto VALUES(null, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+        numero,
+        nome,
+        preco,
+        TipoProduto_id,
+        ingredientes,
+        dataAtualizacao,
+        dataCriacao
+    ]
+    );
+    response.redirect("/produto");
+});
+
+router.post("/tipoproduto", async (request, response) => {
+    const numero = request.body.numero;
+    const nome = request.body.nome;
+    const preco = request.body.preco;
+    const TipoProduto_id = request.body.TipoProduto_id;
+    const ingredientes = request.body.ingredientes;
+    const timestamp = (new Date()).toISOString().slice(0, 19).replace('T', ' ');
+    const dataAtualizacao = timestamp;
+    const dataCriacao = timestamp;
+    const result = await DataBase.executeSQLQuery(`INSERT INTO TipoProduto VALUES(null, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+        numero,
+        nome,
+        preco,
+        TipoProduto_id,
+        ingredientes,
+        dataAtualizacao,
+        dataCriacao
+    ]
+    );
+    response.redirect("/tipoproduto");
+});
+
 //exporta o objeto router configurado
 module.exports = router;
