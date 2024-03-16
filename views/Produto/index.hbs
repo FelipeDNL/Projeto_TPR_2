@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,25 +8,36 @@
 </head>
 
 <body>
-    <h1>Mostrar lista de todos os produtos</h1>
-    <a href="/">Voltar</a>
-    {{!-- Imprimindo um array de objetos de forma genérica --}}
-    {{#each produtos as |produto|}}
-        {{#each produto}}
-            <p>{{@key}}: {{this}}</p>
-        {{/each }}
-    {{/each }}
-    {{!-- Imprimindo um array de objetos quando se conhece a estrutura --}}
-    {{#each produtos}}
-        <p>id: {{this.id}}</p>
-        <p>numero: {{this.numero}}</p>
-        <p>nome: {{this.nome}}</p>
-        <p>preco: {{this.preco}}</p>
-        <p>TipoProduto_id: {{this.TipoProduto_id}}</p>
-        <p>ingredientes: {{this.ingredientes}}</p>
-        <p>dataAtualizacao: {{this.dataAtualizacao}}</p>
-        <p>dataCriacao: {{this.dataCriacao}}</p>
-    {{/each }}
+    <div class="container">
+        <a href="#" class="btn btn-primary">Adicionar um novo Produto</a>
+        <a href="/" class="btn btn-primary">Voltar</a>
+        <table class="table hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each produtos}}
+                <tr>
+                    <th>{{this.id}}</th>
+                    <td>{{this.TipoProduto_descricao}}</td>
+                    <td>{{this.nome}}</td>
+                    <td>{{this.preco}}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary">Mostrar</a>
+                        <a href="#" class="btn btn-secondary">Editar</a>
+                        <a href="#" class="btn btn-danger">Remover</a>
+                    </td>
+                </tr>
+                {{/each }}
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>
