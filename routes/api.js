@@ -16,8 +16,8 @@ router.get("/api/tipoproduto", async (request, response) => {
 
 //rota create produto
 router.get("/produto/create", async (request, response) => {
-    const produtos = await DataBase.executeSQLQuery("SELECT * FROM Produto");
-    response.render("Produto/create", {tipoProdutos: produtos});
+    const tipoProdutos = await TipoProdutoModel.findAll();
+    response.render("Produto/create", { tipoProdutos: tipoProdutos });
 });
 
 //rota create tipoproduto
