@@ -1,31 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const DataBase = require("../config/Database");
-const TipoProdutoModel = require("../models/TipoProdutoModel")
+const DataBase = require('../config/DataBase');
+const TipoProdutoModel = require('../models/TipoProdutoModel');
 
-//rota raiz
+// Rota raiz
 router.get("/", async (request, response) => {
     response.render("index");
 });
 
-//rotas WEB do produto
+// Rotas WEB de Produto
 router.get("/produto", async (request, response) => {
     const produtos = await DataBase.executeSQLQuery(`SELECT Produto.*,
-                                                        TipoProduto.descricao as TipoProduto_descricao
-                                                        FROM Produto
-                                                        JOIN TipoProduto ON Produto.TipoProduto_id = TipoProduto.id`);
+                                                            TipoProduto.descricao
+                                                            FROM Produto
+                                                     JOIN TipoProduto ON Produto.TipoProduto_id = TipoProduto.id`);
     response.render("Produto/index", { produtos: produtos });
 });
 
-//rotas API do TipoProduto
-router.get("/tipoproduto", async (request, response) => {
+router.get("/produto/create", async (request, response) => {
     const tipoProdutos = await TipoProdutoModel.findAll();
-    response.render("TipoProduto/index", { tipoProdutos: tipoProdutos });
-});
-
-//rotar WEB do recurso
-router.get("/recurso", async (request, response) => {
-    response.render("Recurso/index");
+    response.render("Produto/create", { tipoProdutos: tipoProdutos });
 });
 
 router.post("/produto", async (request, response) => {
@@ -38,17 +32,29 @@ router.post("/produto", async (request, response) => {
     const dataAtualizacao = timestamp;
     const dataCriacao = timestamp;
     const result = await DataBase.executeSQLQuery(`INSERT INTO Produto VALUES(null, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-        numero,
-        nome,
-        preco,
-        TipoProduto_id,
-        ingredientes,
-        dataAtualizacao,
-        dataCriacao
-    ]
+        [
+            numero,
+            nome,
+            preco,
+            TipoProduto_id,
+            ingredientes,
+            dataAtualizacao,
+            dataCriacao
+        ]
     );
+    //response.send(result);
     response.redirect("/produto");
+});
+
+// Rotas WEB de TipoProduto
+router.get("/tipoproduto", async (request, response) => {
+    const tipoProdutos = await TipoProdutoModel.findAll();
+    response.render("TipoProduto/index", { tipoProdutos: tipoProdutos });
+});
+
+// Rotas WEB de TipoProduto
+router.get("/tipoproduto/create", async (request, response) => {
+    response.render("TipoProduto/create");
 });
 
 router.post("/tipoproduto", async (request, response) => {
@@ -58,5 +64,9 @@ router.post("/tipoproduto", async (request, response) => {
     response.redirect("/tipoproduto");
 });
 
-//exporta o objeto router configurado
+// Rotas WEB de Recurso
+router.get("/recurso", async (request, response) => {
+    response.render("Recurso/index");
+});
+
 module.exports = router;

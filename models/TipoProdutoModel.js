@@ -1,7 +1,7 @@
-const DataBase = require("../config/Database")
+const DataBase = require("../config/DataBase");
 
 class TipoProdutoModel {
-    /**
+    /** 
      * Os atributos da classe Model precisam ser correspondentes às colunas do banco de dados.
      */
     id = null;
@@ -10,10 +10,10 @@ class TipoProdutoModel {
     dataCriacao = null;
 
     /**
-     * Construtor de Classe TipoProdutoModel
-     * @param {TipoProduto}     tipoProduto     O objeto de entrada é simples (precisa conter apenas chave e valor, sem métodos)
+     * Construtor da Classe TipoProdutoModel
+     * @param {TipoProduto}     tipoProduto     O objeto de entrada é simples (precisa conter apenas chave e valor, sem métodos) e precisa conter as chaves: id, descricao, dataAtualizacao e dataCriacao. Esses campos são as colunas da tabela no banco de dados. Caso não passe um objeto com esses campos, um model vazio será criado.
      */
-    constructor(tipoProduto){
+    constructor(tipoProduto) {
         if (tipoProduto &&
             "id" in tipoProduto &&
             "descricao" in tipoProduto &&

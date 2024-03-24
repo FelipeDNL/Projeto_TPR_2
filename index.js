@@ -1,7 +1,6 @@
-// O objetivo desse arquivo é configurar o express
 const app = require("./config/express");
-const port = app.get("port")
+const port = app.get("port");
 
 app.listen(port, () => {
-    console.log(`Servidor rodando. http://localhost:${port}`)
-})
+    console.log(`Servidor rodando. http://127.0.0.1:${port}`)
+});
