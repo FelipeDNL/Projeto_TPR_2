@@ -34,9 +34,9 @@
                     <td>{{this.nome}}</td>
                     <td>{{this.preco}}</td>
                     <td>
-                        <a href="#" class="btn btn-primary">Mostrar</a>
-                        <a href="#" class="btn btn-secondary">Editar</a>
-                        <a href="#" class="btn btn-danger">Remover</a>
+                        <a href="/produto/{{this.id}}" class="btn btn-primary">Mostrar</a>
+                        <a href="/produto/{{this.id}}/edit" class="btn btn-secondary">Editar</a>
+                        <a href="#" class="btn btn-danger" onclick="deleteResource({{id}})">Remover</a>
                     </td>
                 </tr>
                 {{/each }}
@@ -44,5 +44,18 @@
         </table>
     </div>
 </body>
+
+<script>
+    async function deleteResource(id) {
+        if (confirm("Deseja realmente remover?")) {
+            response = await fetch(`/produto/${id}`, {
+                method: "DELETE"
+            });
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        }
+    }
+</script>
 
 </html>
