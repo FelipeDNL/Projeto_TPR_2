@@ -1,4 +1,4 @@
-const DataBase = require("../config/DataBase");
+const DataBase = require("../database/DataBase");
 
 class TipoProdutoModel {
     /** 
@@ -34,7 +34,7 @@ class TipoProdutoModel {
      */
     static async findOne(id) {
         const result = await DataBase.executeSQLQuery(`SELECT * FROM TipoProduto WHERE TipoProduto.id = ?`, [id]);
-        if (result && result.length > 0)
+        if (result && result.length == 1)
             return new TipoProdutoModel(result[0]);
         return null;
     }
@@ -46,7 +46,7 @@ class TipoProdutoModel {
     static async findAll() {
         const result = await DataBase.executeSQLQuery(`SELECT * FROM TipoProduto`);
         if (result && result.length > 0) {
-            // Transforma um array de Produto [Produto, ...] em uma array de ProdutoModel [ProdutoModel, ...]
+            // Transforma um array de TipoProduto [TipoProduto, ...] em uma array de TipoProdutoModel [TipoProdutoModel, ...]
             const modelArray = result.map(function (obj) {
                 obj = new TipoProdutoModel(obj);
                 return obj;

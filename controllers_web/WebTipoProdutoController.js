@@ -1,6 +1,7 @@
 const TipoProdutoModel = require("../models/TipoProdutoModel");
 
 class WebTipoProdutoController {
+
     /**
     * Mostra uma tela com todos os recursos
     * @param {*} req Requisição da rota do express
@@ -8,18 +9,18 @@ class WebTipoProdutoController {
     */
     async index(req, res) {
         const tipoProdutos = await TipoProdutoModel.findAll();
-        res.render("TipoProduto/index", { layout: "Layouts/main", title:"Index de Produto",tipoProdutos: tipoProdutos });
+        res.render("tipoproduto/index", { layout: "layout/main", title: "Index de TipoProduto", tipoProdutos: tipoProdutos });
     }
-    
+
     /**
     * Mostra um formulário para criação de um novo recurso
     * @param {*} req Requisição da rota do express
     * @param {*} res Resposta da rota do express
     */
     async create(req, res) {
-        res.render("TipoProduto/create", { layout: "Layouts/main", title:"Create de Produto" });
+        res.render("tipoproduto/create", { layout: "layout/main", title: "Create de TipoProduto" });
     }
-    
+
     /**
     * Salva um novo recurso no banco de dados
     * @param {*} req Requisição da rota do express
@@ -38,9 +39,15 @@ class WebTipoProdutoController {
     * @param {*} res Resposta da rota do express
     * @param {Number} req.params.tipoProdutoId Parâmetro passado pela rota do express
     */
-
     async show(req, res) {
+        try {
+            const tipoProduto = await TipoProdutoModel.findOne(req.params.tipoProdutoId);
+            res.send(tipoProduto);
+        } catch (error) {
+            
+        }
     }
+
     /**
     * Mostra um formulário para editar um recurso específico
     * @param {*} req Requisição da rota do express

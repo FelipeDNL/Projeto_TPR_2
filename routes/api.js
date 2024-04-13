@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const DataBase = require('../config/DataBase');
+const DataBase = require('../database/DataBase');
 
 // Rotas API de Produto
 router.get("/api/produto", async (request, response) => {

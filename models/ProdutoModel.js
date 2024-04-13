@@ -1,4 +1,4 @@
-const DataBase = require("../config/DataBase");
+const DataBase = require("../database/DataBase");
 
 class ProdutoModel {
     /** 
@@ -47,7 +47,7 @@ class ProdutoModel {
      */
     static async findOne(id) {
         const result = await DataBase.executeSQLQuery(`SELECT * FROM Produto WHERE Produto.id = ?`, [id]);
-        if (result && result.length > 0)
+        if (result && result.length == 1)
             return new ProdutoModel(result[0]);
         return null;
     }
@@ -59,12 +59,12 @@ class ProdutoModel {
      */
     static async findOneWithTipoProdutoDescricao(id) {
         const result = await DataBase.executeSQLQuery(`SELECT Produto.*,
-                                                                  TipoProduto.descricao
+                                                              TipoProduto.descricao
                                                            FROM Produto
                                                            JOIN TipoProduto ON Produto.TipoProduto_id = TipoProduto.id
                                                            WHERE Produto.id = ?
                                                            ORDER BY Produto.id`, [id]);
-        if (result && result.length > 0)
+        if (result && result.length == 1)
             return result[0];
         return null;
     }
