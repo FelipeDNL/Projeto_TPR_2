@@ -2,6 +2,9 @@
 
 <div class="container">
     <form method="post" action="/produto/{{produto.id}}?_method=put">
+        {{#if csrfToken}}
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        {{/if}}
         <div class="my-3">
             <label for="id-input-id" class="form-label">ID</label>
             <input type="text" id="id-input-id" value="{{produto.id}}" class="form-control" disabled>

@@ -7,10 +7,10 @@ const router = express.Router();
 // Rotas de TipoProduto
 router.get("/tipoproduto", webTipoProdutoController.index);
 router.get("/tipoproduto/create", webTipoProdutoController.create);
-router.post("/tipoproduto", webTipoProdutoController.store);
+router.post("/tipoproduto", webTipoProdutoController.storeValidationRules, webTipoProdutoController.store);
 router.get("/tipoproduto/:tipoProdutoId", webTipoProdutoController.show);
 router.get("/tipoproduto/:tipoProdutoId/edit", webTipoProdutoController.edit);
-router.put("/tipoproduto/:tipoProdutoId", webTipoProdutoController.update);
+router.put("/tipoproduto/:tipoProdutoId", webTipoProdutoController.updateValidationRules, webTipoProdutoController.update);
 router.delete("/tipoproduto/:tipoProdutoId", webTipoProdutoController.destroy);
 
 // Rotas de Produto
@@ -25,10 +25,10 @@ router.delete("/produto/:produtoId", webProdutoController.destroy);
 // Rotas de Mesa
 router.get("/mesa", webMesaController.index);
 router.get("/mesa/create", webMesaController.create);
-router.post("/mesa", webMesaController.store);
+router.post("/mesa", webMesaController.storeValidationRules, webMesaController.store);
 router.get("/mesa/:mesaId", webMesaController.show);
 router.get("/mesa/:mesaId/edit", webMesaController.edit);
-router.put("/mesa/:mesaId", webMesaController.update);
+router.put("/mesa/:mesaId", webMesaController.updateValidationRules, webMesaController.update);
 router.delete("/mesa/:mesaId", webMesaController.destroy);
 
 // Demais rotas ainda sem controlador (iremos criar um controlador para essas rotas no futuro)

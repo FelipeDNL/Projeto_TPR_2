@@ -6,6 +6,7 @@ const Crypto = require("crypto");
 const express = require('express');
 const methodOverride = require("method-override");
 const session = require("express-session");
+const csurf = require("csurf")
 const config = require('config');
 const app = express();
 const webRoutes = require("../routes/web");
@@ -18,7 +19,7 @@ app.set("view engine", "hbs");
 // Configura os CustomHelpers do pacote hbs
 HbsConfigureCustomHelpers.run();
 
-// Define as rotas estáticas para os arquivos da pasta public
+// Configura o middleware do Express que define as rotas estáticas para os arquivos da pasta public
 app.use(express.static("./public"));
 // Configura o middleware do Express que analisa dados codificados em URL que são enviados para o servidor.
 app.use(express.urlencoded({ extended: false }));
@@ -31,9 +32,17 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// Defino aque irá utilizar o arquivo routes/web.js p/ configurar as rotas do tipo WEB
-app.use(webRoutes);
+//connfigura o midware para fazer o parse no corpo da requisição e identificar dados no formato json 
+app.use(express.json());
+
 // Defino aque irá utilizar o arquivo routes/api.js p/ configurar as rotas do tipo API
 app.use(apiRoutes);
+
+//define um novo middleware
+app.use(csurf());
+
+// Defino aque irá utilizar o arquivo routes/web.js p/ configurar as rotas do tipo WEB
+app.use(webRoutes);
+
 
 module.exports = app;

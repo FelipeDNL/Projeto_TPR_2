@@ -1,13 +1,13 @@
 const { param, body, validationResult } = require("express-validator");
+const SessionStatusMessageHandler = require("../message_handler/SessionStatusMessageHandler");
 const ProdutoModel = require("../models/ProdutoModel");
 const TipoProdutoModel = require("../models/TipoProdutoModel");
-const SessionStatusMessageHandler = require("../message_handler/SessionStatusMessageHandler");
 
 class WebProdutoController {
     /**
     * Mostra uma tela com todos os recursos
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
+    * @param {express.Request} req O objeto de requisição do Express.
+    * @param {express.Response} res O objeto de resposta do Express.
     */
     async index(req, res) {
         try {
@@ -16,7 +16,8 @@ class WebProdutoController {
                 layout: "layout/main",
                 title: "Index de Produto",
                 produtos: produtos,
-                message: SessionStatusMessageHandler.getAndClearSessionStatusMessage(req)
+                message: SessionStatusMessageHandler.getAndClearSessionStatusMessage(req),
+                csrfToken: req.csrfToken()
             });
         } catch (error) {
             SessionStatusMessageHandler.setSessionStatusMessage(req, "danger", error);
@@ -24,15 +25,16 @@ class WebProdutoController {
                 layout: "layout/main",
                 title: "Index de Produto",
                 produtos: [],
-                message: SessionStatusMessageHandler.getAndClearSessionStatusMessage(req)
+                message: SessionStatusMessageHandler.getAndClearSessionStatusMessage(req),
+                csrfToken: req.csrfToken()
             });
         }
     }
 
     /**
     * Mostra um formulário para criação de um novo recurso
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
+    * @param {express.Request} req O objeto de requisição do Express.
+    * @param {express.Response} res O objeto de resposta do Express.
     */
     async create(req, res) {
         try {
@@ -40,7 +42,8 @@ class WebProdutoController {
             return res.render("produto/create", {
                 layout: "layout/main",
                 title: "Create de Produto",
-                tipoProdutos: tipoProdutos
+                tipoProdutos: tipoProdutos,
+                csrfToken: req.csrfToken()
             });
         } catch (error) {
             SessionStatusMessageHandler.setSessionStatusMessage(req, "danger", error);
@@ -61,8 +64,8 @@ class WebProdutoController {
 
     /**
     * Salva um novo recurso no banco de dados
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
+    * @param {express.Request} req O objeto de requisição do Express.
+    * @param {express.Response} res O objeto de resposta do Express.
     */
     async store(req, res) {
         try {
@@ -78,7 +81,7 @@ class WebProdutoController {
             produto.TipoProduto_id = req.body.TipoProduto_id;
             produto.ingredientes = req.body.ingredientes;
             const result = await produto.save();
-            SessionStatusMessageHandler.setSessionStatusMessage(req, "success", `Produto ${result.id}-${result.nome} salvo com sucesso.`);
+            SessionStatusMessageHandler.setSessionStatusMessage(req, "success", `Produto ${result.nome} salvo com sucesso.`);
         } catch (error) {
             SessionStatusMessageHandler.setSessionStatusMessage(req, "danger", error);
         }
@@ -88,8 +91,8 @@ class WebProdutoController {
 
     /**
     * Mostra um recurso específico
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
+    * @param {express.Request} req O objeto de requisição do Express.
+    * @param {express.Response} res O objeto de resposta do Express.
     * @param {Number} req.params.produtoId Parâmetro passado pela rota do express
     */
     async show(req, res) {
@@ -102,7 +105,7 @@ class WebProdutoController {
                     produto: produto
                 });
             }
-            SessionStatusMessageHandler.setSessionStatusMessage(req, "warning", `Produto ${req.params.produtoId} não encontrado.`);
+            SessionStatusMessageHandler.setSessionStatusMessage(req, "warning", `Produto com id = ${req.params.produtoId} não encontrado.`);
         } catch (error) {
             SessionStatusMessageHandler.setSessionStatusMessage(req, "danger", error);
         }
@@ -112,8 +115,8 @@ class WebProdutoController {
 
     /**
     * Mostra um formulário para editar um recurso específico
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
+    * @param {express.Request} req O objeto de requisição do Express.
+    * @param {express.Response} res O objeto de resposta do Express.
     * @param {Number} req.params.produtoId Parâmetro passado pela rota do express
     */
     async edit(req, res) {
@@ -125,10 +128,11 @@ class WebProdutoController {
                     layout: "layout/main",
                     title: "Edit de Produto",
                     produto: produto,
-                    tipoProdutos: tipoProdutos
+                    tipoProdutos: tipoProdutos,
+                    csrfToken: req.csrfToken()
                 });
             }
-            SessionStatusMessageHandler.setSessionStatusMessage(req, "warning", `Produto ${req.params.produtoId} não encontrado.`);
+            SessionStatusMessageHandler.setSessionStatusMessage(req, "warning", `Produto com id = ${req.params.produtoId} não encontrado.`);
         } catch (error) {
             SessionStatusMessageHandler.setSessionStatusMessage(req, "danger", error);
         }
@@ -149,8 +153,8 @@ class WebProdutoController {
 
     /**
     * Atualiza um recurso existente no banco de dados
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
+    * @param {express.Request} req O objeto de requisição do Express.
+    * @param {express.Response} res O objeto de resposta do Express.
     * @param {Number} req.params.produtoId Parâmetro passado pela rota do express
     */
     async update(req, res) {
@@ -162,7 +166,7 @@ class WebProdutoController {
             }
             const produto = await ProdutoModel.findOne(req.params.produtoId);
             if (!produto) {
-                SessionStatusMessageHandler.setSessionStatusMessage(req, "warning", `Produto ${req.params.produtoId} não encontrado.`);
+                SessionStatusMessageHandler.setSessionStatusMessage(req, "warning", `Produto com id = ${req.params.produtoId} não encontrado.`);
                 return res.redirect("/produto");
             }
             produto.numero = req.body.numero;
@@ -171,7 +175,7 @@ class WebProdutoController {
             produto.TipoProduto_id = req.body.TipoProduto_id;
             produto.ingredientes = req.body.ingredientes;
             const result = await produto.update();
-            SessionStatusMessageHandler.setSessionStatusMessage(req, "success", `Produto ${result.id}-${result.nome} editado com sucesso.`);
+            SessionStatusMessageHandler.setSessionStatusMessage(req, "success", `Produto ${result.nome} editado com sucesso.`);
         } catch (error) {
             SessionStatusMessageHandler.setSessionStatusMessage(req, "danger", error);
         }
@@ -181,25 +185,25 @@ class WebProdutoController {
 
     /**
     * Remove um recurso existente do banco de dados
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
+    * @param {express.Request} req O objeto de requisição do Express.
+    * @param {express.Response} res O objeto de resposta do Express.
     * @param {Number} req.params.produtoId Parâmetro passado pela rota do express
     */
     async destroy(req, res) {
         try {
             const produto = await ProdutoModel.findOne(req.params.produtoId);
             if (!produto) {
-                SessionStatusMessageHandler.setSessionStatusMessage(req, "warning", `Produto ${req.params.produtoId} não encontrado.`);
+                SessionStatusMessageHandler.setSessionStatusMessage(req, "warning", `Produto com id = ${req.params.produtoId} não encontrado.`);
                 return res.redirect("/produto");
             }
             const result = await produto.delete();
-            SessionStatusMessageHandler.setSessionStatusMessage(req, "success", `Produto ${result.id}-${result.nome} removido com sucesso.`);
+            SessionStatusMessageHandler.setSessionStatusMessage(req, "success", `Produto ${result.nome} removido com sucesso.`);
         } catch (error) {
             SessionStatusMessageHandler.setSessionStatusMessage(req, "danger", error);
         }
         return res.redirect("/produto");
     }
-    
+
 }
 
 module.exports = new WebProdutoController();

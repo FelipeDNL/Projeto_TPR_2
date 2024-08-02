@@ -1,5 +1,10 @@
+{{!-- Create de TipoProduto --}}
+
 <div class="container">
     <form method="post" action="/tipoproduto">
+        {{#if csrfToken}}
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        {{/if}}
         <div class="mb-3">
             <label for="id-input-id" class="form-label">ID</label>
             <input type="text" class="form-control" id="id-input-id" value="#" disabled>
