@@ -20,7 +20,7 @@ Este projeto é uma aplicação web desenvolvida para gerenciar mesas, pedidos, 
 1 - Clone o repositório:
 ```
 git clone https://github.com/FelipeDNL/gerenciador-restaurante-node-express-mysql
-cd Projeto-TPR
+cd gerenciador-restaurante-node-express-mysql
 ```
 2 - Instale as dependências:
 ```
